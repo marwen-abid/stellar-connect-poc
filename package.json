@@ -1,0 +1,35 @@
+{
+  "name": "@stellarconnect/monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Stellar Connect SDK - TypeScript monorepo for Stellar anchor infrastructure",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "pnpm -r clean && rm -rf node_modules",
+    "dev": "pnpm -r --parallel dev"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.1"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^12.0.0"
+  }
+}

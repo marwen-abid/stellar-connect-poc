@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@stellarconnect/core": ["packages/core/src/index.ts"],
+      "@stellarconnect/core/*": ["packages/core/src/*"],
+      "@stellarconnect/anchor": ["packages/anchor/src/index.ts"],
+      "@stellarconnect/anchor/*": ["packages/anchor/src/*"],
+      "@stellarconnect/sdk": ["packages/sdk/src/index.ts"],
+      "@stellarconnect/sdk/*": ["packages/sdk/src/*"],
+      "@stellarconnect/signers": ["packages/signers/src/index.ts"],
+      "@stellarconnect/signers/*": ["packages/signers/src/*"]
+    }
+  },
+  "include": ["packages/*/src", "examples/*/src"],
+  "exclude": ["node_modules", "dist", "coverage", ".turbo"]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "@stellar-connect/anchor-server",
+  "version": "0.1.0",
+  "description": "Express-based Stellar Anchor Protocol server example",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc && cp -r src/views dist/",
+    "start": "node dist/index.js",
+    "test:anchor": "docker run --network host stellar/anchor-tests:latest --home-domain http://localhost:8000 --seps 1 10 24"
+  },
+  "keywords": [
+    "stellar",
+    "anchor",
+    "sep"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@stellarconnect/anchor": "workspace:*",
+    "@stellarconnect/core": "workspace:*",
+    "@types/multer": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^20.10.6",
+    "playwright": "^1.58.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}

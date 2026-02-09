@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+  anchor-compliance:
+    name: Anchor Compliance Tests
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Start anchor server
+        run: node dist/index.js &
+        working-directory: examples/anchor-server
+        env:
+          STELLAR_SIGNING_KEY: SBRVW5MTD2FGEQMYG77CAB5LYDVVNY7UOUOC2WUGPLUMRB5VJ27MSL2K
+          JWT_SECRET: test-secret-key-minimum-32-characters-required-for-security
+          PORT: '8000'
+
+      - name: Wait for server to be ready
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8000/health > /dev/null 2>&1; then
+              echo "Server is ready"
+              exit 0
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 1
+          done
+          echo "Server failed to start"
+          exit 1
+
+      - name: Run Stellar anchor compliance tests
+        run: npx --yes @stellar/anchor-tests --home-domain http://localhost:8000 --seps 1 10 24
